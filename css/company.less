@@ -1,0 +1,166 @@
+/*
+ * 集团管理
+ */
+
+#B-m2-sub1,
+#B-m2-sub2,
+#B-m2-sub3,
+#B-m2-sub4,
+#B-m2-sub5,
+#B-m2-sub6,
+#B-m2-sub7,
+#B-m2-sub8 {
+    display: none;
+}
+
+.B-m2-sub4-addGroup-list {
+    height: 100px;
+    overflow: auto;
+}
+
+.B-m2-sub4-addGroup-list-item {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.B-m2-sub5-addUserGroup-user-list,
+.B-m2-sub5-editGroup-user-list,
+.B-m2-sub5-group-user-list,
+.B-m2-sub6-user-list {
+    height: 300px;
+    overflow: auto;
+    position: relative;
+}
+
+.B-m2-sub5--group-user-list-item,
+.B-m2-sub5-addUserGroup-user-list-item,
+.B-m2-sub5-editGroup-user-list-item,
+.B-m2-sub6-user-list-item {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.B-m2-sub5-editGroup-user-list-item-detail+span {
+    width: 250px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    color: dodgerblue;
+}
+
+.B-m2-sub5-editGroup-user-list-item {
+    border-bottom: 1px dashed #2C3B41;
+}
+
+.B-m2-sub7-menu-btn-base(@bg_color:black, @border_color:black, @txt_color:white) {
+    display: inline-block;
+    background: @bg_color;
+    border: 1px solid @border_color;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: @txt_color;
+    outline: none;
+    position: relative;
+    top: -10px;
+}
+
+.file {
+    position: relative;
+    display: inline-block;
+    background: #D0EEFF;
+    border: 1px solid #99D3F5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1E88C7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #AADFFD;
+    border-color: #78C3F3;
+    color: #004974;
+    text-decoration: none;
+}
+
+.file-export {
+    .B-m2-sub7-menu-btn-base(#D0EEFF,#99D3F5,#1E88C7);
+}
+.B-m2-sub7_back {
+    .B-m2-sub7-menu-btn-base(#C9302C,#C9302C,white);
+}
+/*服务套餐*/
+.server-package {}
+.server-package-item {
+    width: 100px;
+    overflow: hidden;
+    margin: 5px;
+    display: inline-block;
+    cursor: pointer;
+
+}
+.server-package-item-content {
+    padding: 4px;
+    border: 1px solid gray;
+    position: relative;
+    color: black;
+    text-align: center;
+}
+.server-package-item-active {
+    position: absolute;
+    right: -4px;
+    bottom: -4px;
+}
+.server-vender {
+    margin-bottom: 5px;
+}
+.model-load-btn {
+    display: inline-block;
+    text-decoration: none;
+    background: green;
+    border: 1px solid green;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: white;
+}
+.model-load-btn:hover.model-load-btn:active,
+.model-load-btn:link,
+.model-load-btn:visited {
+    text-decoration: none;
+    color: white;
+}
+
+
+.over-map-mask{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+}
+
+.over-map-mask #over-map-content {
+    position: absolute;
+    border: 1px solid #9a8158;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height:600px;
+    margin-left: -300px;
+    margin-top: -300px;
+    background-color: white;
+}

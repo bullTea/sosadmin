@@ -1,0 +1,360 @@
+/*
+ * 登录页面
+ */
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-size: 14px;
+}
+
+body {
+	color: #4a494a;
+	min-height: 640px;
+	background-image: url(../img/login/background2.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-attachment: fixed;
+	-webkit-background-attachment: fixed;
+	-moz-background-attachment: fixed;
+	-o-background-attachment: fixed;
+	 background-position:center;
+}
+
+
+/*页首start*/
+
+.showPicDiv {
+	position: absolute;
+	top: 20%;
+	left: 10%;
+}
+
+#header {
+	height: 80px;
+	background-color: white;
+}
+
+.logo {
+	margin-top: 15px;
+}
+
+.header-title {
+	font-size: 50px;
+	font-weight: 400;
+}
+
+.header-title-aside {
+	font-size: 25px;
+}
+
+
+/*页首end*/
+
+
+/*登录容器start*/
+
+#content {
+	width: 370px;
+	padding: 5px;
+	overflow: hidden;
+	position: absolute;
+	right: 10%;
+	top: 30%;
+	background-color: white;
+}
+
+.login-input-data {
+	border-radius: 5px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.login-input-name {
+	border: 2px solid #9b9a9b;
+	display: inline-block;
+	border-radius: 2px;
+	padding: 3px;
+	margin-bottom: 8px;
+	width: 335px;
+}
+
+.login-input-name input {
+	border: none;
+	outline: none;
+	width: 325px;
+}
+
+.error-info {
+	color: red;
+	float: right;
+	padding-left: 50px;
+	display: none;
+}
+
+.error-info-detail {
+	color: red;
+	display: none;
+}
+
+.error-info-login-name {
+	color: red;
+	display: none;
+}
+
+.error-info-validateCode {
+	color: red;
+	display: none;
+}
+
+.login-input-password {
+	border: 2px solid #9b9a9b;
+	display: inline-block;
+	border-radius: 2px;
+	padding: 3px;
+	margin-bottom: 8px;
+	width: 335px;
+}
+
+.login-input-password input {
+	border: none;
+	outline: none;
+	width: 325px;
+}
+
+.login-input-validateCode {
+	border: 2px solid #9b9a9b;
+	display: inline-block;
+	border-radius: 2px;
+	padding: 3px;
+	width: 240px;
+}
+
+.login-input-validateCode input {
+	border: none;
+	outline: none;
+	width: 230px;
+}
+
+#randomCode {
+	
+	width: 90px;
+	height: 30px;
+	position: relative;
+	top:10px;
+}
+
+.rember-content {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.rember-content label {
+	font-size: 12px;
+}
+
+.rember-content input {
+	vertical-align: middle;
+}
+
+.forgetPwdBtn {
+	font-size: 12px;
+	float: right;
+	cursor: pointer;
+}
+
+#loginBtn {
+	border: 1px solid #1585d1;
+	border-radius: 3px;
+	outline: none;
+	cursor: pointer;
+	color: white;
+	width: 360px;
+	height: 35px;
+	background-color: #1585d1;
+	margin: 0px auto;
+	display: block;
+}
+
+#loginBtn:hover {}
+
+.downloadTitle {
+	margin-top: 10px;
+	display: none;
+}
+
+.downloadTitle a {
+	float: right;
+	text-decoration: none;
+}
+
+#footer {
+	text-align: center;
+	position: fixed;
+	bottom: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	display: none;
+}
+
+
+/*登录容器end*/
+
+
+/*忘记密码弹出框start*/
+
+#resetPwdContent {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.6);
+	padding-top: 130px;
+	color: black;
+}
+
+.resetPwdBox {
+	width: 350px;
+	margin: 0px auto;
+	padding: 5px;
+	overflow: hidden;
+	background-color: white;
+	position: relative;
+	border: 2px solid #4a495a;
+	border-radius: 5px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.closeBoxBtn {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+
+.pwdBoxTitle {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.pwdBoxTitle span {
+	font-size: 20px;
+}
+
+.reset-pwd-input-box {
+	border: 2px solid #9b9a9b;
+	display: inline-block;
+	border-radius: 2px;
+	padding: 3px;
+	margin-bottom: 10px;
+	width: 340px;
+}
+
+.reset-pwd-input-box input {
+	border: none;
+	outline: none;
+	width: 334px;
+}
+
+#boxSubmitBtn {
+	border: 1px solid #4a494a;
+	border-radius: 3px;
+	outline: none;
+	cursor: pointer;
+	color: white;
+	width: 350px;
+	height: 35px;
+	background-color: #9b9a9b;
+	margin: 0px auto;
+	display: block;
+}
+
+#result-error-info {
+	color: red;
+	text-align: center;
+	margin-bottom: 5px;
+	visibility: hidden;
+}
+
+#curUser {
+	margin-bottom: 5px;
+}
+
+.setpwd-input-newpwd {
+	border: 2px solid #9b9a9b;
+	display: inline-block;
+	border-radius: 2px;
+	padding: 3px;
+	width: 340px;
+}
+
+.setpwd-input-newpwd input {
+	border: none;
+	outline: none;
+	width: 310px;
+}
+
+.setpwd-input-error-info {
+	color: red;
+	font-size: 4px;
+	visibility: hidden;
+}
+
+.eyeBtn {
+	float: right;
+	cursor: pointer;
+}
+
+#setpwdValidate {
+	border: 2px solid #9b9a9b;
+	border-radius: 2px;
+	padding: 3px;
+	width: 210px;
+}
+
+#boxGetValidateBtn {
+	border: 1px solid #4a494a;
+	border-radius: 3px;
+	outline: none;
+	cursor: pointer;
+	color: white;
+	width: 125px;
+	height: 27px;
+	background-color: #4a494a;
+	display: inline-block;
+}
+
+#boxSubmitSurePwdBtn {
+	border: 1px solid #4a494a;
+	border-radius: 3px;
+	outline: none;
+	cursor: pointer;
+	color: white;
+	width: 350px;
+	height: 35px;
+	background-color: #9b9a9b;
+	margin: 0px auto;
+}
+
+.degreeLoginContent {}
+
+.wirteNewPwdContent {
+	display: none;
+}
+
+
+/*忘记密码弹出框end*/

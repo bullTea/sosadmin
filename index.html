@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta content="webkit" name="renderer" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>后台管理</title>
+		<script type="text/javascript" src="js/checkLogin.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/simplepop.css" />
+		<link rel="stylesheet" href="css/paging.css" />
+        <script src="http://webapi.amap.com/maps?v=1.3&key=3f7960a084cfa9886d6718f88e80526a"></script>
+        <script type="text/javascript" src="js/GpsTransformation.js"></script>
+		<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/simplepop.js"></script>
+		<script type="text/javascript" src="js/query.js"></script>
+		<script type="text/javascript" src="js/paging.js"></script>
+		<script type="text/javascript" src="js/global.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+	</head>
+
+	<body>
+		<!--页首start-->
+		<div class="content-header">
+			<img class="header-logo" src="img/mainFrame/logo1.png" width="243" height="30">
+			<span class="header-title">对讲业务企业管理系统</span>
+			<div class="header-login">
+				<img src="img/mainFrame/header_admin_logo.png" width="24" height="24">
+				<span id="header-login-name">张三</span>
+				<img src="img/mainFrame/header_admin_passWord.png" width="24" height="24">
+				<span onclick="globalSetAdminPasswordBox()">修改密码</span>
+				<img src="img/mainFrame/header_admin_logout.png" width="24" height="24">
+				<span onclick="haderUILogOut()">注销</span>
+			</div>
+		</div>
+		<!--修改密码start-->
+		<div class="modal fade" id="content-header-set-admin-password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title">
+							修改密码
+						</h4>
+					</div>
+					<div class="modal-body">
+						<!--
+						<label>登录名</label>
+						<input type="text" id="header_ui_loginname" class="form-control" placeholder="中英文均可，32个英文或汉字">
+					    -->
+						<label>旧密码</label>
+						<input type="password" id="header_ui_old_loginpwd" class="form-control" placeholder="须为1~16位字母或数字的组合">
+						<label>新密码</label>
+						<input type="password" id="header_ui_loginpwd" class="form-control" placeholder="须为1~16位字母或数字的组合">
+						<label>确认密码</label>
+						<input type="password" id="header_ui_sure_loginpwd" class="form-control" placeholder="须为1~16位字母或数字的组合">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" onclick="headerUIsetPassword()">保存</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--修改密码end-->
+		<!--页首end-->
+		<!--内容start-->
+		<div class="content-main">
+			<!--侧边导航栏start-->
+			<div class="main-sidebar-content">
+				<ul class="sidebar-menu">
+					<li class="sidebar-menu-item left-menu-open">
+						<div class="sidebar-menu-item-header">
+							<span class="sidebar-menu-item-header-active-class"></span>
+							<span class="glyphicon glyphicon-briefcase"></span>
+							<span>经销商管理</span>
+							<span class="glyphicon glyphicon-chevron-down sidebar-menu-item-header-fold-btn"></span>
+						</div>
+						<div class="sidebar-menu-item-content">
+							<ul>
+								<li onclick="Am1CreateNewDistributor(this)">新建经销商</li>
+								<li onclick="Am1ShowMyDistributor(this)">下级经销商</li>
+							</ul>
+						</div>
+					</li>
+					<li class="sidebar-menu-item">
+						<div class="sidebar-menu-item-header">
+							<span class="sidebar-menu-item-header-active-class"></span>
+							<span class="glyphicon glyphicon-home"></span>
+							<span>集团管理</span>
+							<span class="glyphicon glyphicon-chevron-down sidebar-menu-item-header-fold-btn" id="default_show_menu_btn"></span>
+						</div>
+						<div class="sidebar-menu-item-content">
+							<ul>
+								<li class="left-menu-open" onclick="Bm1CreateNewCompany(this)">新建集团</li>
+								<li id="default_show_menu" onclick="Bm2ShowCompanyList(this)">用户集团</li>
+							</ul>
+						</div>
+					</li>
+					<li class="sidebar-menu-item left-menu-open">
+						<div class="sidebar-menu-item-header">
+							<span class="sidebar-menu-item-header-active-class"></span>
+							<span class="glyphicon glyphicon-user"></span>
+							<span>管理员管理</span>
+							<span class="glyphicon glyphicon-chevron-down sidebar-menu-item-header-fold-btn"></span>
+						</div>
+						<div class="sidebar-menu-item-content">
+							<ul>
+								<li onclick="Cm1ShowAdminManageUI(this)">管理员</li>
+							</ul>
+						</div>
+					</li>
+					<li class="sidebar-menu-item">
+						<div class="sidebar-menu-item-header">
+							<span class="sidebar-menu-item-header-active-class"></span>
+							<span class="glyphicon glyphicon-list-alt"></span>
+							<span>账户信息管理</span>
+							<span class="glyphicon glyphicon-chevron-down sidebar-menu-item-header-fold-btn"></span>
+						</div>
+						<div class="sidebar-menu-item-content">
+							<ul>
+								<li onclick="Dm1ShowAccountInfoUI(this)">查询余额</li>
+								<li onclick="Dm2ShowTransactionInfoUI(this)">交易记录</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<!--侧边导航栏end-->
+
+			<!--菜单信息展示容器start-->
+			<div class="main-show-content">
+				<!--新建经销商容器start-->
+				<div id="A-m1" class="col-xs-12 col-xs-offset-0 main-show-content-menu-item-show-panel">
+					<h1>新建经销商</h1>
+					<form role="form">
+						<div class="form-group col-xs-12">
+							<label>名字</label>
+							<input type="text" class="form-control" v-model="nickName" placeholder="中英文均可，32个英文或汉字">
+
+						</div>
+						<div class="form-group col-xs-12">
+							<label>登录名</label>
+							<input type="text" class="form-control" v-model="loginName" placeholder="中英文均可，32个英文或汉字">
+
+						</div>
+						<div class="form-group col-xs-12">
+							<label>密码</label>
+							<input type="password" class="form-control" v-model="loginPassword" placeholder="须为1~16位字母或数字的组合">
+
+						</div>
+						<div class="form-group col-xs-12">
+							<button type="button" class="btn btn-primary" v-on:click="save()">新建</button>
+						</div>
+					</form>
+				</div>
+				<!--新建经销商容器end-->
+
+				<!--查看下级经销商展示容器start-->
+				<div id="A-m2" class="col-xs-12 col-xs-offset-0 main-show-content-menu-item-show-panel">
+					<!--显示下级经销商列表容器start-->
+					<div id="A-m2-sub1">
+						<h1>下级经销商</h1>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>名称</th>
+									<th>账户余额(点券)</th>
+									<th>创建者</th>
+									<th>更新时间</th>
+									<th>创建时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in distributorArr">
+									<td>{{ site.name }}</td>
+									<td>{{ site.money }}</td>
+									<td>{{ site.createName }}</td>
+									<td>{{ site.updateTime }}</td>
+									<td>{{ site.createTime }}</td>
+									<td>
+										<img class="cursor-style" src="img/mainFrame/add.png" width="16" height="16" title="添加管理员" v-on:click="add(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/bianji.png" width="16" height="16" title="编辑" v-on:click="edit(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/delete.png" width="16" height="16" title="删除" v-on:click="deleteOne(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/money_bag.png" width="16" height="16" title="分配点券" v-on:click="allotMoey(site.id)" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="A-m2-sub1-page"></div>
+					</div>
+					<!--显示下级经销商列表容器end-->
+
+					<!--显示下级经销商管理员列表容器start-->
+					<div id="A-m2-sub2">
+						<h1>管理员列表</h1>
+						<button type="button" class="btn btn-primary" v-on:click="createAdmin()">新建管理员</button>
+						<button type="button" class="btn btn-danger" v-on:click="goBack()">返回</button>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>登录名</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in adminArr">
+									<td>{{ site.name }}</td>
+									<td><img class="cursor-style" src="img/mainFrame/passwordReset.png" width="16" height="16" title="重置密码" v-on:click="Am2Sub2AdminSetPwd(site.id)" /></td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="A-m2-sub2-page"></div>
+					</div>
+					<!--显示下级经销商管理员列表容器end-->
+
+					<!--显示经销商创建管理员容器start-->
+					<div id="A-m2-sub3">
+						<h1>新建经销商管理账号</h1>
+						<form role="form">
+
+							<div class="form-group col-xs-12">
+								<label>登录名</label>
+								<input type="text" class="form-control" v-model="loginName" placeholder="中英文均可，32个英文或汉字">
+
+							</div>
+							<div class="form-group col-xs-12">
+								<label>密码</label>
+								<input type="password" class="form-control" v-model="loginPassword" placeholder="须为1~16位字母或数字的组合">
+
+							</div>
+							<!--
+							<div class="form-group col-xs-12">
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="1" />新建下级经销商</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="2" />更新下级经销商</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="3" />删除下级经销商</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="4" />添加服务器</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="5" />更新服务器</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="6" />删除服务器</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="7" />添加管理员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="8" />更新管理员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="9" />删除管理员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="10" />增加管理者权限</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="11" />删除管理员权限</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="12" />添加功能</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="13" />更新功能</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="14" />删除功能</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="15" />新建集团</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="16" />更新集团</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="17" />删除集团</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="18" />创建聊天组</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="19" />更新聊天组</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="20" />删除聊天组</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="21" />添加组成员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="22" />批量添加组成员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="23" />更新组成员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="24" />删除组成员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="25" />添加用户</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="26" />批量添加用户</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="27" />更新用户</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="28" />删除用户</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="31" />登录</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="32" />注销</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="33" />重置密码</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="34" />修改密码</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="35" />查看集团</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="36" />查看转账记录</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="37" />查看权限管理</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="38" />查看操作记录</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="39" />查看服务器</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="40" />登录记录</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="41" />添加集团管理员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="42" />查看经销商管理员</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="43" />转账操作</label>
+								<label><input class="A-m2-powr-detail" type="checkbox" checked="checked" powerType="44" />创建用户管理员</label>
+							</div>
+							-->
+							<div class="form-group col-xs-12">
+								<button type="button" class="btn btn-primary" v-on:click="createAdminSave()">新建</button>
+								<button type="button" class="btn btn-danger" v-on:click="goBack2()">返回</button>
+							</div>
+						</form>
+					</div>
+					<!--显示经销商创建管理员容器end-->
+				</div>
+				<!--查看下级经销商展示容器end-->
+
+				<!--集团管理容器start-->
+				<!--新建经销商容器start-->
+				<div id="B-m1" class="col-xs-12 col-xs-offset-0 main-show-content-menu-item-show-panel">
+					<h1>新建集团</h1>
+					<form role="form">
+						<div class="form-group col-xs-12">
+							<label>集团名</label>
+							<input type="text" class="form-control" v-model="companyName" placeholder="中英文均可，32个英文或汉字">
+
+						</div>
+						<div class="form-group col-xs-12">
+							<label>所属地区(选择用户真实的经常使用地点,可以获得更好的使用体验)</label>
+							<select class="form-control" v-model="selectCity">
+								<option value="1">北京市</option>
+								<option value="2">天津市</option>
+								<option value="3">上海市</option>
+								<option value="4">重庆市</option>
+								<option value="5">河北省</option>
+								<option value="6">山西省</option>
+								<option value="7">辽宁省</option>
+								<option value="8">吉林省</option>
+								<option value="9">黑龙江省</option>
+								<option value="10">江苏省</option>
+								<option value="11">浙江省</option>
+								<option value="12">安徽省</option>
+								<option value="13">福建省</option>
+								<option value="14">江西省</option>
+								<option value="15">山东省</option>
+								<option value="16">河南省</option>
+								<option value="17">湖北省</option>
+								<option value="18">湖南省</option>
+								<option value="19">广东省</option>
+								<option value="20">海南省</option>
+								<option value="21">四川省</option>
+								<option value="22">贵州省</option>
+								<option value="23">云南省</option>
+								<option value="24">陕西省</option>
+								<option value="25">甘肃省</option>
+								<option value="26">青海省</option>
+								<option value="27">台湾省</option>
+								<option value="28">内蒙古自治区</option>
+								<option value="29">广西壮族自治区</option>
+								<option value="30">西藏自治区</option>
+								<option value="31">宁夏回族自治区</option>
+								<option value="32">新疆维吾尔自治区</option>
+								<option value="33">香港特别行政区</option>
+								<option value="34">澳门特别行政区</option>
+							</select>
+
+						</div>
+
+						<div class="form-group col-xs-12">
+							<button type="button" class="btn btn-primary" v-on:click="save()">新建</button>
+						</div>
+					</form>
+				</div>
+				<!--新建经销商容器end-->
+
+				<!--用户集团展示容器start-->
+				<div id="B-m2" class="col-xs-12 col-xs-offset-0 main-show-content-menu-item-show-panel">
+					<!--显示用户集团列表容器start-->
+					<div id="B-m2-sub1">
+						<h1>用户集团</h1>
+
+						<!--提示信息start-->
+						<div id="system-info-box" class="alert alert-danger">
+							<a href="#" class="close system-info-box-close-btn" v-on:click="systemBoxClose()">
+								&times;
+							</a>
+							<strong>警告！</strong>
+							<span class="system-info-box-info"></span>
+						</div>
+						<!--提示信息end-->
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>集团名</th>
+									<th>经销商</th>
+									<th>所属地区</th>
+									<th>创建者</th>
+									<th>创建时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in companyArr">
+									<td>{{ site.campanyName }}</td>
+									<td>{{ site.distributorName }}</td>
+									<td>{{ site.areaName }}</td>
+									<td>{{ site.createUser }}</td>
+									<td>{{ site.createTime }}</td>
+									<td>
+										<img class="cursor-style" src="img/mainFrame/user_list.png" width="16" height="16" title="集团成员" v-on:click="showCompanyUserList(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/company_push.png" width="16" height="16" title="预定义组" v-on:click="showCompanyGroupList(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/admin.png" width="16" height="16" title="管理员" v-on:click="showCompanyAdminList(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/waring.png" width="16" height="16" title="警务站" v-on:click="showWaringAdminList(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/bianji.png" width="16" height="16" title="编辑" v-on:click="showCompanyEditNameUI(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/delete.png" width="16" height="16" title="删除" v-on:click="showDeleteCompany(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/update_sync.png" width="16" height="16" title="同步" v-if="site.sync==1" v-on:click="CompanySync(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/update_no_sync.png" width="16" height="16" title="同步" v-else v-on:click="CompanySync(site.id)" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="B-m2-sub1-page"></div>
+					</div>
+					<!--显示用户集团列表容器end-->
+					<!--显示集团对应的用户列表容器start-->
+					<div id="B-m2-sub2">
+						<h1>集团成员</h1>
+						<button type="button" class="btn btn-primary" v-on:click="createAdminSave()">新建成员</button>
+						<button type="button" class="btn btn-success" v-on:click="createMoreAdminSave()">批量新建成员</button>
+						<button type="button" class="btn btn-info" v-on:click="serverPackageMoneySave()">套餐续费</button>
+						<button type="button" class="btn btn-danger" v-on:click="goBackSub1()">返回</button>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>MEID</th>
+									<th>昵称</th>
+									<th>电话</th>
+									<th>套餐名称</th>
+									<th>创建者</th>
+									<th>创建日期</th>
+									<th>过期日期</th>
+									<th>所属区域</th>
+									<th>所属厂商</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in userListArr">
+									<td><input type="checkbox" v-bind:value="site.id" v-model="sub2_checkedUidArr">{{ site.userLoginName }}</td>
+									<td>{{ site.userName }}</td>
+									<td>{{ site.mdn }}</td>
+									<td>{{ site.menuName }}</td>
+									<td>{{ site.createUser }}</td>
+									<td>{{ site.createTime }}</td>
+									<td>{{ site.overTime }}</td>
+									<td>{{ site.regionName }}</td>
+									<td>{{ site.venderName }}</td>
+									<td>
+										<img class="cursor-style" src="img/mainFrame/company_push.png" width="16" height="16" title="所属预定义组" v-on:click="showSub4UserInGroupList(site.id)" />
+										<!--
+										<img class="cursor-style" src="img/mainFrame/dingwei.png" width="16" height="16" title="立即定位" v-on:click="showSub2NowSendLocationMenuUI(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/locationConfingSet.png" width="16" height="16" title="更新定位配置" v-on:click="showSub2UpdateLocationConfigMenuUI(site.id)" />
+										
+										<img class="cursor-style" src="img/mainFrame/admin.png" width="16" height="16" title="修改密码" v-on:click="showSub2SetUserPwdMenuUI(site.id)" />
+										-->
+										<img class="cursor-style" src="img/mainFrame/bianji.png" width="16" height="16" title="编辑" v-on:click="showSub2SetUserOtherInfoMenuUI(site.id,site.userName)" />
+										<img class="cursor-style" src="img/mainFrame/delete.png" width="16" height="16" title="删除" v-on:click="showSub2DeleteUserMenuUI(site.id)" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="B-m2-sub2-page"></div>
+					</div>
+					<!--显示集团对应的用户列表容器end-->
+
+					<!--新建成员容器start-->
+					<div id="B-m2-sub3">
+						<h1>新建成员</h1>
+						<form role="form">
+							<div class="form-group col-xs-12">
+								<label>MEID</label>
+								<input type="text" class="form-control" v-model="sub3_loginName" placeholder="MEID">
+
+							</div>
+							<!--
+							<div class="form-group col-xs-12">
+								<label>新建用户密码</label>
+								<input type="password" class="form-control" v-model="sub3_password" placeholder="须为1~16位字母或数字的组合">
+							</div>
+							-->
+							<div class="form-group col-xs-12">
+								<label>昵称</label>
+								<input type="text" class="form-control" v-model="sub3_nicheng" placeholder="中英文均可，32个英文或汉字">
+							</div>
+							<div class="form-group col-xs-12">
+								<label>电话</label>
+								<input type="text" class="form-control" v-model="sub3_tel" placeholder="电话号码">
+							</div>
+							<div class="server-packag">
+								<h4>选择套餐:</h4>
+								<div class="server-package-item" v-for="site in sub3_packageArr">
+									<div class="server-package-item-content" v-bind:selectType="site.type" v-bind:title="site.detail" v-on:click="sub3_selectPackage(site.type)">
+										<span>{{site.name}}</span>
+										<img class="server-package-item-active" v-bind:selectType="site.type" src="img/mainFrame/sign_check.png" width="16" height="16" />
+									</div>
+								</div>
+							</div>
+							<div class="server-vender">
+								<h4>选择区域:</h4>
+								<select class="form-control" v-model="sub3_selectArea">
+									<option v-for="site in sub3_areaArr" v-bind:value="site.Id">{{site.Name}}</option>
+								</select>
+								<h4>选择厂商:</h4>
+								<select class="form-control" v-model="sub3_selectVender">
+									<option v-for="site in sub3_venderArr" v-bind:value="site.Id">{{site.Name}}</option>
+								</select>
+							</div>
+							<!--
+							<div class="form-group col-xs-12">
+								<label>心跳间隔(s)</label>
+								<input type="text" class="form-control" v-model="sub3_heartTime" placeholder="取值范围1~30000秒">
+							</div>
+							<div class="form-group col-xs-12">
+								<label>是否开启定位</label>
+								<select class="form-control" v-model="sub3_openLocation">
+									<option value="true">是</option>
+									<option value="false">否</option>
+								</select>
+							</div>
+							-->
+							<div class="form-group col-xs-12">
+								<button type="button" class="btn btn-primary" v-on:click="sub3save()">新建</button>
+								<button type="button" class="btn btn-danger" v-on:click="sub3goBack()">返回</button>
+							</div>
+						</form>
+					</div>
+					<!--新建成员容器end-->
+
+					<!--用户所属预定义组容器start-->
+					<div id="B-m2-sub4">
+						<h1>所属预定义群组</h1>
+						<button type="button" class="btn btn-primary" v-on:click="sub4AddGroupOpenMenu()">加入预定义组</button>
+						<button type="button" class="btn btn-danger" v-on:click="goBackSub4()">返回</button>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>预定义群组名称</th>
+									<th>优先级</th>
+									<th>是否禁言</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in sub4_userInGroupList">
+									<td>{{ site.sub4_groupName }}</td>
+									<td>{{ site.sub4_priority }}</td>
+									<td>{{ site.sub4_nospeak }}</td>
+									<td>
+										<img class="cursor-style" src="img/mainFrame/bianji.png" width="16" height="16" title="编辑" v-on:click="showSub4EditMenu(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/delete.png" width="16" height="16" title="删除" v-on:click="showSub4DelMenu(site.id)" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="B-m2-sub4-page"></div>
+					</div>
+					<!--用户所属预定义组容器end-->
+
+					<!--用户所属预定义组编辑容器start-->
+					<div class="modal fade" id="B-m2-sub4-edit-m1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="myModalLabel">
+										所在群组会话设置
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>优先级</label>
+									<select class="form-control" v-model="sub4_editM1_priority">
+										<option value="1">低(1)</option>
+										<option value="2">低(2)</option>
+										<option value="3">低(3)</option>
+										<option value="4">中(4)</option>
+										<option value="5">中(5)</option>
+										<option value="6">中(6)</option>
+										<option value="7">高(7)</option>
+										<option value="8">高(8)</option>
+										<option value="9">高(9)</option>
+									</select>
+
+									<label>是否禁言</label>
+									<select class="form-control" v-model="sub4_nospeak">
+										<option value="true">是</option>
+										<option value="false">否</option>
+									</select>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub4EditMenuData()">提交更改</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--用户所属预定义组编辑容器end-->
+
+					<!--用户加入预定义组容器start-->
+					<div class="modal fade" id="B-m2-sub4-addGroup-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title" id="myModalLabel">
+										加入预定义组
+									</h4>
+								</div>
+								<div class="modal-body">
+									<div class="B-m2-sub4-addGroup-list">
+										<div class="B-m2-sub4-addGroup-list-item" v-for="site in sub4AddGropuArr">
+											<label><input class="B-m2-sub4-addGroup-list-item-detail" type="checkbox" v-bind:groupID="site.gid" />{{site.groupName}}</label>
+										</div>
+									</div>
+									<label>优先级</label>
+									<select class="form-control" v-model="sub4_userAddGroup_priority">
+										<option value="1">低(1)</option>
+										<option value="2">低(2)</option>
+										<option value="3">低(3)</option>
+										<option value="4">中(4)</option>
+										<option value="5">中(5)</option>
+										<option value="6">中(6)</option>
+										<option value="7">高(7)</option>
+										<option value="8">高(8)</option>
+										<option value="9">高(9)</option>
+									</select>
+
+									<label>是否禁言</label>
+									<select class="form-control" v-model="sub4_userAddGroup_nospeak">
+										<option value="true">是</option>
+										<option value="false">否</option>
+									</select>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub4AddGroupMenuData()">添加</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--用户加入预定义组容器end-->
+
+					<!--立即定位容器start-->
+					<div class="modal fade" id="B-m2-sub2-nowLocation-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										立即定位
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>定位模式</label>
+									<select class="form-control" v-model="sub2_nowLocation_style">
+										<option value="1">MSA</option>
+										<option value="2">MSB</option>
+										<option value="3">GPS定位</option>
+										<option value="4">网络定位</option>
+									</select>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub2NowLocationSedMenuData()">定位</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--立即定位容器end-->
+
+					<!--更新定位配置容器start-->
+					<div class="modal fade" id="B-m2-sub2-updateLocationConfig-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										更新定位配置
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>是否开启定位</label>
+									<select class="form-control" v-model="sub2_updateLocationConfig_openLoc">
+										<option value="true">是</option>
+										<option value="false">否</option>
+									</select>
+									<label>定位间隔(s)</label>
+									<input type="text" class="form-control" v-model="sub2_updateLocationConfig_heartTime" placeholder="取值范围1~30000秒">
+									<label>上传服务器地址</label>
+									<input type="text" class="form-control" v-model="sub2_updateLocationConfig_ip" placeholder="xxx.xxx.xxx.xxx">
+									<label>上传服务器端口号</label>
+									<input type="text" class="form-control" v-model="sub2_updateLocationConfig_port" placeholder="0~65535">
+
+									<label>定位模式</label>
+									<select class="form-control" v-model="sub2_updateLocationConfig_locStyle">
+										<option value="1">MSA</option>
+										<option value="2">MSB</option>
+										<option value="3">GPS定位</option>
+										<option value="4">网络定位</option>
+									</select>
+									<label>开始时间1</label>
+									<input type="text" class="form-control" v-model="sub2_updateLocationConfig_starttime1" placeholder="时间格式00:00">
+									<label>结束时间1</label>
+									<input type="text" class="form-control" v-model="sub2_updateLocationConfig_endtime1" placeholder="时间格式00:00">
+									<label>开始时间2</label>
+									<input type="text" class="form-control" v-model="sub2_updateLocationConfig_starttime2" placeholder="时间格式00:00">
+									<label>结束时间2</label>
+									<input type="text" class="form-control" v-model="sub2_updateLocationConfig_endtime2" placeholder="时间格式00:00">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub2UpdateLocationConfigMenuData()">保存</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--更新定位配置容器end-->
+
+					<!--修改集团成员密码容器start-->
+					<div class="modal fade" id="B-m2-sub2-setUserPwd-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										修改用户密码
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>新密码</label>
+									<input type="password" class="form-control" v-model="sub2_setUserPwd_pwd1" placeholder="须为1~16位字母或数字的组合">
+									<label>确认密码</label>
+									<input type="password" class="form-control" v-model="sub2_setUserPwd_pwd2" placeholder="须为1~16位字母或数字的组合">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub2SetUserPwdMenuData()">保存</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--修改集团成员密码容器end-->
+
+					<!--集团下用户基础信息编辑容器start-->
+					<div class="modal fade" id="B-m2-sub2-setUserOterInfo-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										基本信息编辑
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>昵称</label>
+									<input type="text" class="form-control" v-model="sub2_setUserOterInfo_name" placeholder="中英文均可，32个英文或汉字">
+									<label>选择套餐</label>
+									<br />
+									<div class="server-package-item" v-for="site in sub2_packageArr">
+										<div class="server-package-item-content" v-bind:selectType="site.type" v-bind:title="site.detail" v-on:click="sub2_selectPackage(site.type,site.name)">
+											<span>{{site.name}}</span>
+											<img class="server-package-item-active" v-bind:selectType="site.type" src="img/mainFrame/sign_check.png" width="16" height="16" />
+										</div>
+									</div>
+									<!--
+									<label>是否开启定位服务</label>
+									<select class="form-control" v-model="sub2_setUserOterInfo_openLoc">
+										<option value="true">是</option>
+										<option value="false">否</option>
+									</select>
+									<label>定位间隔(s)</label>
+									<input type="text" class="form-control" v-model="sub2_setUserOterInfo_heartTime" placeholder="取值范围1~30000秒">
+									-->
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-success" v-on:click="saveSub2SetUserPackageMenuData()">修改套餐</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub2SetUserOterInfoMenuData()">修改昵称</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--集团下用户基础信息编辑容器end-->
+
+					<!--集团下用户批量续费套餐容器start-->
+					<div class="modal fade" id="B-m2-sub2-setUserPackage-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										套餐续费
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>选择套餐</label>
+									<br />
+									<div class="server-package-item" v-for="site in sub2_continue_packageArr">
+										<div class="server-package-item-content" v-bind:selectType="site.type" v-bind:title="site.detail" v-on:click="sub2_continue_selectPackage(site.type)">
+											<span>{{site.name}}</span>
+											<img class="server-package-item-active" v-bind:selectType="site.type" src="img/mainFrame/sign_check.png" width="16" height="16" />
+										</div>
+									</div>
+
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-success" v-on:click="saveSub2SetUserContinuePackageMenuData()">修改套餐</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--集团下用户批量续费套餐容器start-->
+
+					<!--显示集团对应的预定义组列表容器start-->
+					<div id="B-m2-sub5">
+						<h1>预定义组管理</h1>
+						<button type="button" class="btn btn-primary" v-on:click="ShowSub5CreateGroupUI()">新建预定义群组</button>
+						<button type="button" class="btn btn-danger" v-on:click="goBackSub5()">返回</button>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>预定义群组名称</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in sub5_groupArr">
+									<td>{{ site.groupName }}</td>
+									<td>
+										<img class="cursor-style" src="img/mainFrame/bianji.png" width="16" height="16" title="编辑" v-on:click="showSub5EditGroupMenuUI(site.id,site.keyID,site.groupName)" />
+										<img class="cursor-style" src="img/mainFrame/add.png" width="16" height="16" title="添加成员" v-on:click="showSub5AddGroupMenuUI(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/delete.png" width="16" height="16" title="删除" v-on:click="showSub5DeleteGroupMenuUI(site.id)" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="B-m2-sub5-page"></div>
+					</div>
+					<!--显示集团对应的预定义组列表容器end-->
+
+					<!--新建预定义组容器start-->
+					<div class="modal fade" id="B-m2-sub5-createGroup-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										新建预定义组
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>预定义群组名称</label>
+									<input type="text" class="form-control" v-model="sub5_createGroup_name" placeholder="中英文均可，32个英文或汉字">
+									<label>选择加入的组成员</label>
+									<div class="B-m2-sub5-group-user-list">
+										<!--loading显示容器start-->
+										<div class="loading-gif">
+											<img src="img/mainFrame/loading.gif" width="30" height="30" />
+											<p>请稍等...</p>
+										</div>
+										<!--loading显示容器end-->
+										<div class="B-m2-sub5--group-user-list-item" v-for="site in sub5_group_userArr">
+											<label><input class="B-m2-sub5-group-user-list-item-detail" type="checkbox" v-bind:uID="site.id"/>{{site.userName}}</label>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub5CreateGroupMenuData()">新建</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--新建预定义组容器end-->
+
+					<!--修改预定义组属性容器start-->
+					<div class="modal fade" id="B-m2-sub5-editGroup-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										编辑预定义组
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>预定义群组名称</label>
+									<input type="text" class="form-control" v-model="sub5_editGroup_name" placeholder="中英文均可，32个英文或汉字">
+									<label>群组成员</label>
+									<div class="B-m2-sub5-editGroup-user-list">
+										<!--loading显示容器start-->
+										<div class="loading-gif">
+											<img src="img/mainFrame/loading.gif" width="30" height="30" />
+											<p>请稍等...</p>
+										</div>
+										<!--loading显示容器end-->
+										<div class="B-m2-sub5-editGroup-user-list-item" v-for="site in sub5_editGroup_userArr">
+											<label><input class="B-m2-sub5-editGroup-user-list-item-detail" type="checkbox" v-bind:uID="site.id"/><span>{{site.userName}}</span></label>
+											<label>优先级</label>
+											<select class="B-m2-sub5-editGroup-priority" v-model="site.priority">
+												<option value="1">低(1)</option>
+												<option value="2">低(2)</option>
+												<option value="3">低(3)</option>
+												<option value="4">中(4)</option>
+												<option value="5">中(5)</option>
+												<option value="6">中(6)</option>
+												<option value="7">高(7)</option>
+												<option value="8">高(8)</option>
+												<option value="9">高(9)</option>
+											</select>
+
+											<label>是否禁言</label>
+											<select class="B-m2-sub5-editGroup-speak" v-model="site.forbidSpeak">
+												<option value="1">是</option>
+												<option value="0">否</option>
+											</select>
+											<button type="button" class="btn btn-success btn-xs" v-on:click="sub5EditGroupOneUserMenuData(site.id)">保存</button>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-danger" v-on:click="moveUserSub5EditGroupMenuData()">批量移除成员</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub5EditGroupMenuData()">改名</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--修改预定义组属性容器end-->
+
+					<!--预定义组添加成员容器start-->
+					<div class="modal fade" id="B-m2-sub5-addUserGroup-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										添加成员
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>选择要加入的成员</label>
+									<div class="B-m2-sub5-addUserGroup-user-list">
+										<!--loading显示容器start-->
+										<div class="loading-gif">
+											<img src="img/mainFrame/loading.gif" width="30" height="30" />
+											<p>请稍等...</p>
+										</div>
+										<!--loading显示容器end-->
+										<div class="B-m2-sub5-addUserGroup-user-list-item" v-for="site in sub5_addUserGroup_userArr">
+											<label><input class="B-m2-sub5-addUserGroup-user-list-item-detail" type="checkbox" v-bind:uID="site.id"/>{{site.userName}}</label>
+											<!--
+											<br />
+											<label>优先级</label>
+											<select class="form-control B-m2-sub5-addUserGroup-priority">
+												<option value="1">低(1)</option>
+												<option value="2">低(2)</option>
+												<option value="3">低(3)</option>
+												<option value="4">中(4)</option>
+												<option value="5">中(5)</option>
+												<option value="6">中(6)</option>
+												<option value="7">高(7)</option>
+												<option value="8">高(8)</option>
+												<option value="9">高(9)</option>
+											</select>
+
+											<label>是否禁言</label>
+											<select class="form-control B-m2-sub5-addUserGroup-speak">
+												<option value="true">是</option>
+												<option value="false">否</option>
+											</select>
+											-->
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub5AddGroupMenuData()">添加</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--预定义组添加成员容器end-->
+
+					<!--显示集团管理员列表容器start-->
+					<div id="B-m2-sub6">
+						<h1>集团管理员</h1>
+						<button type="button" class="btn btn-primary" v-on:click="ShowSub6CreateAdminUI()">新建集团管理员</button>
+						<button type="button" class="btn btn-primary" v-on:click="ShowSub6CreateDispatcherpUI()">新建集团调度员</button>
+						<button type="button" class="btn btn-danger" v-on:click="goBackSub6()">返回</button>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>登录名</th>
+									<th>身份</th>
+									<th>关联的用户</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in sub6_adminArr">
+									<td>{{ site.loginName }}</td>
+									<td>{{ site.identity }}</td>
+									<td>{{ site.relationUser }}</td>
+									<td>
+										<img class="cursor-style" src="img/mainFrame/delete.png" width="16" height="16" title="删除" v-on:click="sub6DeleteOne(site.id)" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="B-m2-sub6-page"></div>
+					</div>
+					<!--显示集团管理员列表容器end-->
+
+					<!--新建集团管理员容器start-->
+					<div class="modal fade" id="B-m2-sub6-createAdmin-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										新建集团管理员
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>登录名</label>
+									<input type="text" class="form-control" v-model="sub6_login_name" placeholder="中英文均可，32个英文或汉字">
+									<label>密码</label>
+									<input type="password" class="form-control" v-model="sub6_login_password" placeholder="须为1~16位字母或数字的组合">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub6CreateAdminMenuData()">新建</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--新建集团管理员容器end-->
+
+					<!--新建集团调度员容器start-->
+					<div class="modal fade" id="B-m2-sub6-createDispatcher-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										新建集团调度员
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>登录名</label>
+									<input type="text" class="form-control" v-model="sub6_dispatcher_login_name" placeholder="中英文均可，32个英文或汉字">
+									<label>密码</label>
+									<input type="password" class="form-control" v-model="sub6_dispatcher_login_password" placeholder="须为1~16位字母或数字的组合">
+									<label>关联的用户</label>
+									<!--
+									<select class="form-control" v-model="sub6_relation_select_user">
+										<option v-bind:value="site.id" v-for="site in sub6_userArr">{{site.userName}}</option>
+									</select>
+									-->
+									<div class="B-m2-sub6-user-list">
+										<!--loading显示容器start-->
+										<div class="loading-gif">
+											<img src="img/mainFrame/loading.gif" width="30" height="30" />
+											<p>请稍等...</p>
+										</div>
+										<!--loading显示容器end-->
+										<div class="B-m2-sub6-user-list-item" v-for="site in sub6_userArr">
+											<label><input class="B-m2-sub6-user-list-item-detail" type="radio" name="userlist" v-bind:uID="site.id"/>{{site.userName}}</label>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub6CreateDispatcherMenuData()">新建</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--新建集团调度员容器end-->
+
+					<!--批量新建成员容器start-->
+					<div id="B-m2-sub7">
+						<h1>批量新建成员</h1>
+						<div class="B-m2-sub7-footer">
+							<form id="B-m2-sub7-form">
+								<a href="javascript:;" class="file">导入文件 <input type="file" onchange="ExcelImport(this)" /></a>
+								<button type="button" class="file-export" onclick="ExcelExport()">导出文件</button>
+								<a href="javascript:;" download="成员文件.xlsx" id="B-m2-sub7-hf"></a>
+								<a class="model-load-btn" href="成员文件模板.xlsx">下载模板</a>
+								<button type="button" class="B-m2-sub7_back" v-on:click="sub7_goBack()">返回</button>
+							</form>
+							<div class="server-packag">
+								<h4>选择套餐:</h4>
+								<div class="server-package-item" v-for="site in sub7_packageArr">
+									<div class="server-package-item-content" v-bind:selectType="site.type" v-bind:title="site.detail" v-on:click="sub7_selectPackage(site.type)">
+										<span>{{site.name}}</span>
+										<img class="server-package-item-active" v-bind:selectType="site.type" src="img/mainFrame/sign_check.png" width="16" height="16" />
+									</div>
+								</div>
+							</div>
+							<div class="server-vender">
+								<h4>选择区域:</h4>
+								<select class="form-control" v-model="sub7_selectArea">
+									<option v-for="site in sub7_areaArr" v-bind:value="site.Id">{{site.Name}}</option>
+								</select>
+								<h4>选择厂商:</h4>
+								<select class="form-control" v-model="sub7_selectVender">
+									<option v-for="site in sub7_venderArr" v-bind:value="site.Id">{{site.Name}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="B-m2-sub7-content">
+							<h4>新建用户失败列表:</h4>
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>MEID</th>
+										<th>昵称</th>
+										<th>电话</th>
+										<th>错误原因</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="table-tr-style" v-for="site in sub7_newUserArr">
+										<td>{{ site.LoginName }}</td>
+										<td>{{ site.Name }}</td>
+										<td>{{ site.Mdn }}</td>
+										<td>{{ site.Reason }}</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<!--批量新建成员容器end-->
+
+					<!--警务站展示容器start-->
+					<div id="B-m2-sub8">
+						<h1>警务站列表</h1>
+						<button type="button" class="btn btn-danger" v-on:click="goBackSub8()">返回</button>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>警务站名称</th>
+									<th>关联预定义组</th>
+									<th>位置</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in sub8_waringArr">
+									<td>{{ site.Name }}</td>
+									<td>{{ site.GroupName }}</td>
+									<td>[{{ site.Longitude }},{{ site.Latitude }}]</td>
+									<td>
+										<img class="cursor-style" src="img/mainFrame/bianji.png" width="16" height="16" title="关联预定义组" v-on:click="sub8EdintOne(site.Id)" />
+										<img class="cursor-style" src="img/mainFrame/delete.png" width="16" height="16" title="移除关联预定义组" v-on:click="sub8DelOne(site.Id)" />
+										<img class="cursor-style" src="img/mainFrame/location.png" width="16" height="16" title="查看警务站位置" v-on:click="sub8LocationOne(site.Id)" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="B-m2-sub8-page"></div>
+					</div>
+					<!---警务站集团展示容器end-->
+
+					<!--警务站预定义组关联容器start-->
+					<div class="modal fade" id="B-m2-sub8-editGroup-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										关联预定义组
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>选择预定义群组</label>
+									<select class="form-control" v-model="sub8_selectGroup">
+										<option v-for="site in sub8_groupArr" v-bind:value="site.Id">{{site.Name}}</option>
+									</select>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-danger" v-on:click="saveSub8EditData()">修改</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--警务站预定义组关联容器end-->
+					
+					<!--警务站地图容器start-->
+					<div class="over-map-mask">
+						<div id="over-map-content"></div>
+					</div>
+					<!--警务站地图容器end-->
+
+				</div>
+				<!--用户集团展示容器end-->
+
+				<!--集团管理容器end-->
+
+				<!--管理员管理容器start-->
+				<div id="C-m1" class="col-xs-12 col-xs-offset-0 main-show-content-menu-item-show-panel">
+					<!--显示管理员列表容器start-->
+					<div id="C-m1-sub1">
+						<h1>管理员管理</h1>
+						<button type="button" class="btn btn-primary" v-on:click="showsub2CreateAdminUI()">新建管理员</button>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>登录名</th>
+									<th>身份</th>
+									<th>是否有效</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in adminArr">
+									<td>{{ site.loginName }}</td>
+									<td>{{ site.identity }}</td>
+									<td>{{ site.effective }}</td>
+									<td>
+										<img class="cursor-style" src="img/mainFrame/passwordReset.png" width="16" height="16" title="重置密码" v-on:click="rsetPassword(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/bianji.png" width="16" height="16" title="编辑" v-on:click="editMenu(site.id)" />
+										<img class="cursor-style" src="img/mainFrame/delete.png" width="16" height="16" title="删除" v-on:click="deleteOne(site.id)" />
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="C-m1-sub1-page"></div>
+					</div>
+					<!--显示管理员列表容器end-->
+
+					<!--新建运营商管理账号start-->
+					<div id="C-m1-sub2">
+						<h1>新建运营商管理账号</h1>
+						<form role="form">
+
+							<div class="form-group col-xs-12">
+								<label>登录名</label>
+								<input type="text" class="form-control" v-model="sub2_loginName" placeholder="中英文均可，32个英文或汉字">
+
+							</div>
+							<div class="form-group col-xs-12">
+								<label>密码</label>
+								<input type="password" class="form-control" v-model="sub2_loginPassword" placeholder="须为1~16位字母或数字的组合">
+
+							</div>
+							<!--
+							<div class="form-group col-xs-12">
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="1" />新建下级经销商</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="2" />更新下级经销商</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="3" />删除下级经销商</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="4" />添加服务器</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="5" />更新服务器</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="6" />删除服务器</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="7" />添加管理员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="8" />更新管理员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="9" />删除管理员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="10" />增加管理者权限</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="11" />删除管理员权限</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="12" />添加功能</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="13" />更新功能</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="14" />删除功能</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="15" />新建集团</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="16" />更新集团</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="17" />删除集团</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="18" />创建聊天组</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="19" />更新聊天组</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="20" />删除聊天组</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="21" />添加组成员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="22" />批量添加组成员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="23" />更新组成员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="24" />删除组成员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="25" />添加用户</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="26" />批量添加用户</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="27" />更新用户</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="28" />删除用户</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="31" />登录</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="32" />注销</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="33" />重置密码</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="34" />修改密码</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="35" />查看集团</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="36" />查看转账记录</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="37" />查看权限管理</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="38" />查看操作记录</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="39" />查看服务器</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="40" />登录记录</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="41" />添加集团管理员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="42" />查看经销商管理员</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="43" />转账操作</label>
+								<label><input class="C-m1-powr-detail" type="checkbox" checked="checked" powerType="44" />创建用户管理员</label>
+							</div>
+                           -->
+							<div class="form-group col-xs-12">
+								<button type="button" class="btn btn-primary" v-on:click="sub2_createAdminSave()">新建</button>
+								<button type="button" class="btn btn-danger" v-on:click="sub2_goBack()">返回</button>
+							</div>
+						</form>
+					</div>
+					<!--新建运营商管理账号end-->
+
+					<!--更新管理员编辑容器start-->
+					<div class="modal fade" id="C-m1-sub3-setAdminOterInfo-menu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+									<h4 class="modal-title">
+										更新管理员
+									</h4>
+								</div>
+								<div class="modal-body">
+									<label>登录名</label>
+									<input type="text" class="form-control" v-model="sub3_name" placeholder="中英文均可，32个英文或汉字">
+									<label>是否有效</label>
+									<select class="form-control" v-model="sub3_openLoc">
+										<option value="true">是</option>
+										<option value="false">否</option>
+									</select>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									<button type="button" class="btn btn-primary" v-on:click="saveSub3SetUserOterInfoMenuData()">保存</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--更新管理员编辑容器end-->
+				</div>
+				<!--管理员管理容器end-->
+
+				<!--账户信息管理容器start-->
+				<div id="D-m1" class="col-xs-12 col-xs-offset-0 main-show-content-menu-item-show-panel">
+					<!--查询余额容器start-->
+					<div id="D-m1-sub1">
+						<h1>账户信息</h1>
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>名字</th>
+									<th>账户余额(点券)</th>
+									<th>更新时间</th>
+									<th>创建时间</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in accountArr">
+									<td>{{ site.name }}</td>
+									<td>{{ site.money }}</td>
+									<td>{{ site.updateTime }}</td>
+									<td>{{ site.createTime }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!--查询余额容器end-->
+				</div>
+
+				<div id="D-m2" class="col-xs-12 col-xs-offset-0 main-show-content-menu-item-show-panel">
+					<!--交易记录容器start-->
+					<div id="D-m2-sub1">
+						<h1>交易记录</h1>
+
+						<div class="D-m2-sub1-search">
+							<span>开始时间:</span>
+							<input id="D-m2-sub1-search-starttm" type="datetime-local" v-model="search_start_tm" />
+							<span>结束时间:</span>
+							<input id="D-m2-sub1-search-endtm" type="datetime-local" v-model="search_end_tm" />
+							<select v-model="selectSearchType">
+								<option value="-1">全部</option>
+								<option value="0">转账</option>
+								<option value="1">续费</option>
+								<option value="2">变更套餐</option>
+								<option value="3">新建用户</option>
+							</select>
+							<button type="button" class="btn btn-danger" v-on:click="serachFun()">查询</button>
+						</div>
+
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>转账者</th>
+									<th>交易操作者</th>
+									<th>收款人</th>
+									<th>收款人身份</th>
+									<th>交易时间</th>
+									<th>到期时间</th>
+									<th>交易金额</th>
+									<th>交易类型</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="table-tr-style" v-for="site in transactionMoneyArr">
+									<td>{{ site.SrcName }}</td>
+									<td>{{ site.ManagerName }}</td>
+									<td>{{ site.DstName }}</td>
+									<td>{{ site.DstIdType }}</td>
+									<td>{{ site.Transtime }}</td>
+									<td>{{ site.CurrEndtime }}</td>
+									<td>{{ site.Pricesum }}</td>
+									<td>{{ site.TransType }}</td>
+								</tr>
+
+							</tbody>
+						</table>
+						<div id="D-m2-sub1-page"></div>
+					</div>
+					<!--交易记录容器end-->
+				</div>
+				<!--账户信息管理容器end-->
+
+			</div>
+			<!--菜单信息展示容器end-->
+		</div>
+		<!--内容end-->
+		<script type="text/javascript" src="js/xlsx.full.min.js" async="async"></script>
+	</body>
+
+</html>
